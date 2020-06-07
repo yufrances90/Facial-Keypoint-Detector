@@ -36,7 +36,7 @@ class FacialKeypointsDataset(Dataset):
         if(image.shape[2] == 4):
             image = image[:,:,0:3]
         
-        key_pts = self.key_pts_frame.iloc[idx, 1:].as_matrix()
+        key_pts = np.matrix(self.key_pts_frame.iloc[idx, 1:])
         key_pts = key_pts.astype('float').reshape(-1, 2)
         sample = {'image': image, 'keypoints': key_pts}
 
@@ -103,7 +103,7 @@ class Rescale(object):
         img = cv2.resize(image, (new_w, new_h))
         
         # scale the pts, too
-        key_pts = key_pts * [new_w / w, new_h / h]
+        key_pts = np.asarray(key_pts) * np.array([new_w / w, new_h / h])
 
         return {'image': img, 'keypoints': key_pts}
 
